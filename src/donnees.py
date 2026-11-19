@@ -197,16 +197,18 @@ def creer_variables() -> list[Variable]:
     return variables
 
 
-def valider_saisies(saisies: dict[str, str]) -> dict[str, int | str]:
+def valider_saisies(saisies: dict[str, str],
+                    variables: list[Variable] | None = None) -> dict[str, int | str]:
     """Valide toutes les saisies de l'utilisateur en une fois.
 
-    Reçoit : {nom de la variable: texte saisi}.
+    Reçoit : {nom de la variable: texte saisi} et, au besoin, les variables à valider
+             (par défaut : toutes les caractéristiques du modèle).
     Renvoie : {nom de la variable: valeur validée}, prêt pour le modèle.
     Échoue : DonneeInvalideError qui liste toutes les erreurs trouvées (une par ligne).
     """
     valeurs: dict[str, int | str] = {}
     erreurs: list[str] = []
-    for variable in creer_variables():
+    for variable in variables if variables is not None else creer_variables():
         try:
             valeurs[variable.nom] = variable.valider(saisies.get(variable.nom, ""))
         except DonneeInvalideError as erreur:

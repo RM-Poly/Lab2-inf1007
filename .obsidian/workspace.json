@@ -83,7 +83,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "30f9c0fe99d8af99",
@@ -190,6 +191,11 @@
   },
   "active": "1f5a6591017aef8d",
   "lastOpenFiles": [
+    "tests/test_application.py",
+    "src/application.py",
+    "modeles/metadonnees.json",
+    "modeles/modele.joblib",
+    "modeles",
     "Journal_IA.md~",
     "sedMeXRkS"
   ]

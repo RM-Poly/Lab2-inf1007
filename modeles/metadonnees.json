@@ -1,0 +1,51 @@
+{
+  "type": "foret",
+  "nom": "Forêt aléatoire",
+  "caracteristiques": [
+    "score_joueur",
+    "score_croupier",
+    "nb_dix",
+    "as_souple",
+    "action"
+  ],
+  "numeriques": {
+    "score_joueur": {
+      "min": 4,
+      "max": 21
+    },
+    "score_croupier": {
+      "min": 2,
+      "max": 11
+    },
+    "nb_dix": {
+      "min": 0,
+      "max": 3
+    }
+  },
+  "categorielles": {
+    "as_souple": [
+      "non",
+      "oui"
+    ],
+    "action": [
+      "rester",
+      "tirer"
+    ]
+  },
+  "classes": [
+    "defaite",
+    "egalite",
+    "victoire"
+  ],
+  "graine": 42,
+  "nb_lignes_entrainement": 3342,
+  "metriques": {
+    "f1_macro": 0.4586,
+    "exactitude": 0.701,
+    "log_loss": 0.7162,
+    "f1_macro_reference": 0.2422,
+    "exactitude_reference": 0.5706,
+    "log_loss_reference": 0.8789
+  },
+  "nb_lignes_test": 836
+}
