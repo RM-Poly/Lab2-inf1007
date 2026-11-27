@@ -1,4 +1,5 @@
-"""Graphiques Matplotlib partagés par le script d'entraînement et l'interface.
+# Auteurs : Claude (Claude Code), Wproulx09
+"""Graphiques Matplotlib utilisés par l'interface (et pour la figure d'exploration).
 
 Les fonctions renvoient une Figure ; l'affichage ou l'enregistrement est fait ailleurs.
 """
@@ -14,8 +15,6 @@ from matplotlib.figure import Figure
 from matplotlib.ticker import PercentFormatter
 from sklearn.metrics import ConfusionMatrixDisplay
 
-from src.application_v2.application import esperance
-
 COULEURS_ACTION = {"tirer": "#2a6f97", "rester": "#c4553c"}
 # Ordre de lecture : du meilleur au pire résultat.
 ISSUES: list[tuple[str, str, str]] = [
@@ -23,14 +22,6 @@ ISSUES: list[tuple[str, str, str]] = [
     ("egalite", "Égalité", "#9e9e9e"),
     ("defaite", "Défaite", "#c62828"),
 ]
-LIBELLES_VARIABLES = {
-    "score_joueur": "Score de votre main",
-    "score_croupier": "Carte du croupier",
-    "nb_dix": "Cartes de valeur 10 visibles",
-    "nb_cartes": "Nombre de cartes",
-    "action": "Tirer ou rester",
-    "as_souple": "As compté 11",
-}
 
 
 def _style_epure(ax) -> None:
@@ -71,23 +62,6 @@ def figure_comparaison(comparaison: dict[str, dict[str, float]],
     return fig
 
 
-def figure_importances(importances: pd.Series, nom_modele: str) -> Figure:
-    """Barres horizontales : poids de chaque variable dans les décisions du modèle."""
-    serie = importances.sort_values()
-    fig, ax = plt.subplots(figsize=(6.2, 2.8))
-    ax.barh([LIBELLES_VARIABLES.get(n, n) for n in serie.index], serie.values, color="#2a6f97")
-    ax.bar_label(ax.containers[0], labels=[f"{v:.0%}" for v in serie.values], padding=3,
-                 fontsize=9)
-    ax.xaxis.set_major_formatter(PercentFormatter(1.0))
-    ax.set_xlim(0, max(serie.max() * 1.18, 0.1))
-    ax.set_xlabel("Importance relative")
-    ax.set_ylabel("Variable")
-    ax.set_title(f"Ce qui pèse le plus dans la prédiction\n{nom_modele}", fontsize=12, loc="left")
-    _style_epure(ax)
-    fig.tight_layout()
-    return fig
-
-
 def figure_exploration(df: pd.DataFrame) -> Figure:
     """Taux de victoire selon le score du joueur, pour chaque action (graphique d'exploration)."""
     taux = (
@@ -112,9 +86,15 @@ def figure_exploration(df: pd.DataFrame) -> Figure:
 
 
 def figure_matrice_confusion(y_vrai, y_predit) -> Figure:
-    """Matrice de confusion de l'ensemble de test."""
+    """Matrice de confusion de l'ensemble de test (lignes : issue réelle, colonnes : prédite).
+
+    Reçoit : les issues réelles et les issues prédites (mêmes longueurs).
+    Renvoie : la Figure.
+    Échoue : ValueError si les deux tableaux n'ont pas la même longueur.
+    """
     fig, ax = plt.subplots(figsize=(5, 4.5))
     ConfusionMatrixDisplay.from_predictions(y_vrai, y_predit, labels=[i for i, _, _ in ISSUES],
+                                            display_labels=[nom for _, nom, _ in ISSUES],
                                             ax=ax, colorbar=False)
     ax.set_title("Matrice de confusion (ensemble de test)")
     ax.set_xlabel("Issue prédite")

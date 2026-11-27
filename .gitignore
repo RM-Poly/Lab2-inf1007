@@ -6,3 +6,7 @@ historique/
 .venv/
 __pycache__/
 *.py[cod]
+
+# Couverture des tests
+.coverage
+htmlcov/

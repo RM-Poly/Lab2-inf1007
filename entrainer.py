@@ -6,16 +6,18 @@ Usage :  python entrainer.py
 import logging
 import os
 
-from src.config import CHEMIN_DONNEES, DOSSIER_FIGURES, DOSSIER_MODELES
-from src.donnees import CIBLE, JeuDeDonnees
+from src.donnees import CHEMIN_DONNEES, CIBLE, RACINE, JeuDeDonnees
 from src.exceptions import DonneeInvalideError, FichierIntrouvableError
 from src.graphiques import figure_exploration, figure_matrice_confusion
-from src.modele import ForetAleatoire, RegressionLogistique, choisir_meilleur, comparer_modeles
+from src.modele import (DOSSIER_MODELES, ForetAleatoire, RegressionLogistique, choisir_meilleur,
+                        comparer_modeles)
 
 METRIQUE_DE_CHOIX = "log_loss"
+DOSSIER_FIGURES = os.path.join(RACINE, "figures")
 
 
 def main() -> None:
+    """Exécute toute la démarche : exploration, nettoyage, comparaison, figures et sauvegarde."""
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     os.makedirs(DOSSIER_FIGURES, exist_ok=True)
 
@@ -46,7 +48,6 @@ def main() -> None:
     # 4. Garder le meilleur et le sauvegarder
     meilleur = choisir_meilleur(candidats, tableau, METRIQUE_DE_CHOIX)
     print(f"Modèle retenu (plus petite {METRIQUE_DE_CHOIX}) : {meilleur}")
-    print("Importance des variables :\n", meilleur.importances().round(3), "\n")
     figure_matrice_confusion(y_test, meilleur.predire(X_test)).savefig(
         os.path.join(DOSSIER_FIGURES, "matrice_confusion.png"), dpi=120)
     meilleur.sauvegarder(DOSSIER_MODELES)

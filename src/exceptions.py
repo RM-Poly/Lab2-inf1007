@@ -8,7 +8,3 @@ class DonneeInvalideError(ValueError):
 
 class FichierIntrouvableError(FileNotFoundError):
     """Un fichier nécessaire (données, modèle) n'existe pas."""
-
-
-class ModeleNonEntraineError(Exception):
-    """Levée lorsqu'un modèle n'a pas encore été entraîné."""
