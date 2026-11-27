@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Journal_IA.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Journal_IA"
+              "title": "README"
             }
           }
         ]
@@ -83,8 +83,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "30f9c0fe99d8af99",
@@ -191,12 +190,19 @@
   },
   "active": "1f5a6591017aef8d",
   "lastOpenFiles": [
-    "tests/test_application.py",
-    "src/application.py",
-    "modeles/metadonnees.json",
-    "modeles/modele.joblib",
-    "modeles",
-    "Journal_IA.md~",
-    "sedMeXRkS"
+    "Journal_IA.md",
+    "src/__pycache__/donnees.cpython-312.pyc",
+    "src/__pycache__/donnees.cpython-312.pyc.139675761244992",
+    "src/__pycache__/application.cpython-312.pyc",
+    "src/__pycache__/application.cpython-312.pyc.139675761244704",
+    "src/__pycache__/__init__.cpython-312.pyc",
+    "src/__pycache__/__init__.cpython-312.pyc.139675761244560",
+    "src/__pycache__",
+    "DECISIONS.md",
+    "CLAUDE.md",
+    "README.md",
+    "README.md~",
+    "README.md.tmp.51052.55507e5511bb",
+    "README.md.tmp.51052.c7bc9fbae96b"
   ]
 }
