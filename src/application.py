@@ -152,13 +152,14 @@ class Application:
 
         Reçoit : un modèle entraîné ou chargé, et l'historique à utiliser.
         Renvoie : rien.
-        Échoue : jamais.
+        Échoue : DonneeInvalideError si les métadonnées du modèle sont incomplètes.
         """
         self._modele = modele
         self._historique = historique
-        # Variables saisies par l'utilisateur : tout sauf l'action, que l'application
-        # fait varier elle-même pour comparer « tirer » et « rester ».
-        self._variables = [v for v in creer_variables() if v.nom != "action"]
+        # Variables saisies par l'utilisateur, construites à partir des métadonnées du modèle
+        # sauvegardé : tout sauf l'action, que l'application fait varier elle-même pour
+        # comparer « tirer » et « rester ».
+        self._variables = [v for v in creer_variables(modele.metadonnees) if v.nom != "action"]
 
     @classmethod
     def depuis_fichiers(cls, dossier_modele: str = DOSSIER_MODELES,

@@ -1,6 +1,7 @@
 # Auteurs : Claude (Claude Code), Wproulx09
 """Tests de la couche application : prédiction, conseil, décision serrée, historique."""
 
+import json
 import os
 
 import pytest
@@ -84,6 +85,16 @@ def test_les_variables_n_incluent_pas_l_action(app):
     """L'utilisateur ne choisit pas l'action : l'application compare les deux."""
     assert [v.nom for v in app.variables] == ["score_joueur", "score_croupier", "nb_dix",
                                               "as_souple"]
+
+
+def test_les_champs_suivent_les_metadonnees_du_modele(app, dossier_modele):
+    """nb_dix est borné par les données d'entraînement (0 à 3), pas par les 8 possibles."""
+    with open(os.path.join(dossier_modele, "metadonnees.json"), encoding="utf-8") as fichier:
+        bornes = json.load(fichier)["numeriques"]["nb_dix"]
+    nb_dix = next(v for v in app.variables if v.nom == "nb_dix")
+    assert (nb_dix.minimum, nb_dix.maximum) == (bornes["min"], bornes["max"])
+    with pytest.raises(DonneeInvalideError):
+        app.predire({**SAISIES, "nb_dix": str(bornes["max"] + 1)})
 
 
 def test_metriques_et_nom_du_modele(app):

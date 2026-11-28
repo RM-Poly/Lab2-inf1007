@@ -37,6 +37,21 @@ def test_creer_variables_suit_les_caracteristiques():
     assert all(isinstance(v, Variable) for v in variables)
 
 
+def test_creer_variables_depuis_les_metadonnees():
+    """Les bornes et les valeurs viennent du JSON du modèle, pas des constantes du code."""
+    metadonnees = {"caracteristiques": ["nb_dix", "as_souple"],
+                   "numeriques": {"nb_dix": {"min": 0, "max": 3}},
+                   "categorielles": {"as_souple": ["non", "oui"]}}
+    nb_dix, as_souple = creer_variables(metadonnees)
+    assert (nb_dix.minimum, nb_dix.maximum) == (0, 3)
+    assert as_souple.valeurs == ["non", "oui"]
+
+
+def test_metadonnees_incompletes():
+    with pytest.raises(DonneeInvalideError):
+        creer_variables({"caracteristiques": ["nb_dix"], "numeriques": {}, "categorielles": {}})
+
+
 def test_polymorphisme_valider_selon_la_classe():
     # Le même appel valider() donne un int ou un str selon la classe de la variable.
     resultats = {v.nom: v.valider(SAISIES_VALIDES[v.nom]) for v in creer_variables()}

@@ -111,8 +111,9 @@ qu'une régression logistique.
 - **Décision serrée** : quand l'écart d'espérance entre tirer et rester est sous 0,10, l'application
   affiche un avertissement. Il signale 6 des 18 désaccords, dont les plus fréquents (15 et 16 contre
   10), mais aucun de ceux à 12–13.
-- **`nb_dix`** : la validation accepte de 0 à 8, alors que les données d'entraînement ne dépassent
-  pas 3. Au-delà, le modèle extrapole.
+- **`nb_dix`** : les données d'entraînement ne dépassent pas 3 cartes de valeur 10 visibles. Les
+  champs sont construits à partir de `modeles/metadonnees.json`, donc l'application refuse plus de 3
+  au lieu de laisser le modèle extrapoler.
 
 ## Application
 
@@ -185,7 +186,7 @@ Autres outils du chapitre utilisés :
 
 ## Tests et intégration continue
 
-- 110 tests (pytest) : cas usuels, cas limites et cas d'erreur pour chaque module.
+- 113 tests (pytest) : cas usuels, cas limites et cas d'erreur pour chaque module.
 - **Couverture : 95 %** des modules de `src/` (hors interface). Les lignes non couvertes sont les
   blocs `if __name__ == "__main__"` et quelques méthodes secondaires de `cartes.py` (`__str__`,
   `reinitialiser`). L'interface Streamlit (`src/interface/`) n'est pas testée par pytest : elle
@@ -195,6 +196,8 @@ Autres outils du chapitre utilisés :
 
 ## Documentation consultée
 
+- pandas, `read_csv` :
+  https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html
 - scikit-learn, `train_test_split` :
   https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
 - scikit-learn, `RandomForestClassifier` :

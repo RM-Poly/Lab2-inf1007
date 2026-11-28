@@ -4,6 +4,8 @@
 Les fonctions renvoient une Figure ; l'affichage ou l'enregistrement est fait ailleurs.
 """
 
+from collections.abc import Sequence
+
 import matplotlib
 
 matplotlib.use("Agg")  # pas de fenêtre : la figure est enregistrée ou passée à l'interface
@@ -11,6 +13,7 @@ matplotlib.use("Agg")  # pas de fenêtre : la figure est enregistrée ou passée
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 from matplotlib.ticker import PercentFormatter
 from sklearn.metrics import ConfusionMatrixDisplay
@@ -24,7 +27,7 @@ ISSUES: list[tuple[str, str, str]] = [
 ]
 
 
-def _style_epure(ax) -> None:
+def _style_epure(ax: Axes) -> None:
     """Retire le cadre superflu pour un graphique plus lisible."""
     for cote in ("top", "right"):
         ax.spines[cote].set_visible(False)
@@ -85,7 +88,7 @@ def figure_exploration(df: pd.DataFrame) -> Figure:
     return fig
 
 
-def figure_matrice_confusion(y_vrai, y_predit) -> Figure:
+def figure_matrice_confusion(y_vrai: Sequence[str], y_predit: Sequence[str]) -> Figure:
     """Matrice de confusion de l'ensemble de test (lignes : issue réelle, colonnes : prédite).
 
     Reçoit : les issues réelles et les issues prédites (mêmes longueurs).

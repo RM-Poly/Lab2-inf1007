@@ -23,6 +23,10 @@ class Carte:
     couleur: str
 
     def __post_init__(self) -> None:
+        """Vérifie la carte à sa création.
+
+        Échoue : DonneeInvalideError si le rang ou la couleur est inconnu.
+        """
         if self.rang not in RANGS:
             raise DonneeInvalideError(f"Rang de carte inconnu : {self.rang!r}.")
         if self.couleur not in COULEURS:
@@ -40,6 +44,7 @@ class Carte:
 
     @property
     def code(self) -> str:
+        """Code de la carte, ex. « 10♥ » (rang suivi de la couleur)."""
         return f"{self.rang}{self.couleur}"
 
     @property
@@ -51,13 +56,16 @@ class Carte:
 
     @property
     def vaut_dix(self) -> bool:
+        """Vrai pour 10, valet, dame et roi (comptés dans nb_dix)."""
         return self.rang in RANGS_DIX
 
     @property
     def est_rouge(self) -> bool:
+        """Vrai pour cœur et carreau (sert seulement à l'affichage)."""
         return self.couleur in COULEURS_ROUGES
 
     def __str__(self) -> str:
+        """Texte de la carte : son code, ex. « A♠ »."""
         return self.code
 
 
@@ -68,13 +76,19 @@ class Main:
     """Les cartes d'un joueur."""
 
     def __init__(self) -> None:
+        """Crée une main vide."""
         self._cartes: list[Carte] = []
 
     @property
     def cartes(self) -> list[Carte]:
+        """Copie des cartes de la main (la main ne peut pas être modifiée par cette liste)."""
         return list(self._cartes)
 
     def ajouter(self, carte: Carte) -> None:
+        """Ajoute une carte à la main.
+
+        Reçoit : la carte. Renvoie : rien. Échoue : jamais.
+        """
         self._cartes.append(carte)
 
     def retirer(self, carte: Carte) -> bool:
@@ -85,6 +99,10 @@ class Main:
         return False
 
     def _score_et_as_souples(self) -> tuple[int, int]:
+        """Calcule le score en comptant les As pour 1 tant que la main dépasse 21.
+
+        Renvoie : (score, nombre d'As encore comptés 11).
+        """
         total = sum(carte.valeur for carte in self._cartes)
         as_a_11 = sum(1 for carte in self._cartes if carte.rang == "A")
         while total > 21 and as_a_11:
@@ -103,12 +121,15 @@ class Main:
         return self._score_et_as_souples()[1] > 0
 
     def __contains__(self, carte: object) -> bool:
+        """Permet « carte in main »."""
         return carte in self._cartes
 
     def __len__(self) -> int:
+        """Nombre de cartes dans la main."""
         return len(self._cartes)
 
     def __str__(self) -> str:
+        """Cartes de la main séparées par des espaces, ou « (vide) »."""
         return " ".join(str(carte) for carte in self._cartes) or "(vide)"
 
 
@@ -116,15 +137,18 @@ class Table:
     """Le paquet, la main du joueur et la carte visible du croupier (composition)."""
 
     def __init__(self) -> None:
+        """Crée une table vide : toutes les cartes sont dans le paquet."""
         self._main = Main()
         self._carte_croupier: Carte | None = None
 
     @property
     def main(self) -> Main:
+        """La main du joueur."""
         return self._main
 
     @property
     def carte_croupier(self) -> Carte | None:
+        """La carte visible du croupier, ou None si aucune n'est posée."""
         return self._carte_croupier
 
     @property
@@ -133,6 +157,7 @@ class Table:
         return [carte for carte in PAQUET_COMPLET if not self._est_sur_table(carte)]
 
     def _est_sur_table(self, carte: Carte) -> bool:
+        """Vrai si la carte est dans la main du joueur ou devant le croupier."""
         return carte in self._main or carte == self._carte_croupier
 
     def remettre(self, carte: Carte) -> None:
@@ -163,12 +188,17 @@ class Table:
             self._carte_croupier = carte
 
     def reinitialiser(self) -> None:
+        """Remet toutes les cartes au paquet (nouvelle main).
+
+        Reçoit : rien. Renvoie : rien. Échoue : jamais.
+        """
         self._main = Main()
         self._carte_croupier = None
 
     def vers_donnees_affichage(self) -> dict:
         """État de la table sous forme simple (JSON) pour le composant graphique."""
         def decrire(carte: Carte) -> dict:
+            """Une carte sous forme de dictionnaire pour le composant JavaScript."""
             return {"code": carte.code, "rang": carte.rang, "couleur": carte.couleur,
                     "rouge": carte.est_rouge}
 

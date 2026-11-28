@@ -181,19 +181,35 @@ class VariableCategorielle(Variable):
         return f"VariableCategorielle({self.nom!r}, {self.valeurs})"
 
 
-def creer_variables() -> list[Variable]:
-    """Construit une variable par caractéristique du modèle, dans l'ordre de CARACTERISTIQUES.
+def creer_variables(metadonnees: dict | None = None) -> list[Variable]:
+    """Construit une variable par caractéristique du modèle.
 
-    Reçoit : rien (utilise BORNES, VALEURS_CATEGORIELLES et LIBELLES).
-    Renvoie : la liste des variables.
-    Échoue : jamais.
+    Reçoit : au besoin, les métadonnées du modèle sauvegardé (metadonnees.json) ; leurs
+             intervalles numériques et valeurs catégorielles sont alors utilisés, pour que
+             l'interface n'accepte que ce que le modèle a vu à l'entraînement.
+             Sans métadonnées : les bornes possibles au blackjack (BORNES, VALEURS_CATEGORIELLES).
+    Renvoie : la liste des variables, dans l'ordre des caractéristiques.
+    Échoue : DonneeInvalideError si les métadonnées ne décrivent pas une caractéristique.
     """
+    if metadonnees is None:
+        numeriques = {nom: {"min": bas, "max": haut} for nom, (bas, haut) in BORNES.items()}
+        categorielles = {nom: sorted(valeurs) for nom, valeurs in VALEURS_CATEGORIELLES.items()}
+        noms = CARACTERISTIQUES
+    else:
+        numeriques = metadonnees.get("numeriques", {})
+        categorielles = metadonnees.get("categorielles", {})
+        noms = metadonnees.get("caracteristiques", CARACTERISTIQUES)
+
     variables: list[Variable] = []
-    for nom in CARACTERISTIQUES:
-        if nom in BORNES:
-            variables.append(VariableNumerique(nom, LIBELLES[nom], *BORNES[nom]))
+    for nom in noms:
+        libelle = LIBELLES.get(nom, nom)
+        if nom in numeriques:
+            bornes = numeriques[nom]
+            variables.append(VariableNumerique(nom, libelle, int(bornes["min"]), int(bornes["max"])))
+        elif nom in categorielles:
+            variables.append(VariableCategorielle(nom, libelle, set(categorielles[nom])))
         else:
-            variables.append(VariableCategorielle(nom, LIBELLES[nom], VALEURS_CATEGORIELLES[nom]))
+            raise DonneeInvalideError(f"Métadonnées incomplètes : la variable {nom!r} n'est pas décrite.")
     return variables
 
 

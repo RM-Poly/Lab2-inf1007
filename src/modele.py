@@ -98,6 +98,7 @@ def chronometrer(fonction: Callable) -> Callable:
     """
     @wraps(fonction)
     def enveloppe(*args: Any, **kwargs: Any) -> Any:
+        """Appelle la fonction mesurée avec les mêmes arguments et renvoie son résultat."""
         debut = time.perf_counter()
         resultat = fonction(*args, **kwargs)
         journal.info("%s exécuté en %.2f s", fonction.__name__, time.perf_counter() - debut)

@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "Journal_IA.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "Journal_IA"
             }
           }
         ]
@@ -55,7 +55,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "tag:#TODO",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -79,7 +79,8 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -190,6 +191,11 @@
   },
   "active": "1f5a6591017aef8d",
   "lastOpenFiles": [
+    "Journal_IA.md~",
+    "sedtLqXl3",
+    "README.md",
+    "historique/predictions.csv",
+    "historique",
     "Journal_IA.md",
     "src/__pycache__/donnees.cpython-312.pyc",
     "src/__pycache__/donnees.cpython-312.pyc.139675761244992",
@@ -199,10 +205,6 @@
     "src/__pycache__/__init__.cpython-312.pyc.139675761244560",
     "src/__pycache__",
     "DECISIONS.md",
-    "CLAUDE.md",
-    "README.md",
-    "README.md~",
-    "README.md.tmp.51052.55507e5511bb",
-    "README.md.tmp.51052.c7bc9fbae96b"
+    "CLAUDE.md"
   ]
 }

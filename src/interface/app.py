@@ -8,6 +8,7 @@ Application (couche application) et par Table (cartes posées sur la table).
 import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
+from matplotlib.figure import Figure
 
 from src.application import AVERTISSEMENT, CHEMIN_HISTORIQUE, Application, Prediction
 from src.cartes import Carte, Table
@@ -39,7 +40,7 @@ def creer_application() -> Application:
     return Application.depuis_fichiers(DOSSIER_MODELES, CHEMIN_HISTORIQUE)
 
 
-def afficher_figure(figure) -> None:
+def afficher_figure(figure: Figure) -> None:
     """Affiche une figure Matplotlib puis libère sa mémoire."""
     st.pyplot(figure, width="content")
     plt.close(figure)
